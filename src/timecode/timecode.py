@@ -609,13 +609,15 @@ class Timecode:
             bool: True if the other is equal to this Timecode instance.
         """
         if isinstance(other, Timecode):
-            return self.framerate == other.framerate and self.frames == other.frames
+            if self.framerate != other.framerate:
+                raise ValueError("'==' not supported between instances of 'Timecode' with different framerates")
+            return self.frames == other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
             return self.__eq__(new_tc)
         if isinstance(other, int):
             return self.frames == other
-        return False
+        return NotImplemented
 
     def __ge__(self, other: int | str | Timecode | object) -> bool:
         """Override greater than or equal to operator.
@@ -631,16 +633,15 @@ class Timecode:
                 instance.
         """
         if isinstance(other, Timecode):
-            return self.framerate == other.framerate and self.frames >= other.frames
+            if self.framerate != other.framerate:
+                raise ValueError("'>=' not supported between instances of 'Timecode' with different framerates")
+            return self.frames >= other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
             return self.frames >= new_tc.frames
         if isinstance(other, int):
             return self.frames >= other
-        raise TypeError(
-            "'>=' not supported between instances of 'Timecode' and "
-            f"'{other.__class__.__name__}'"
-        )
+        return NotImplemented
 
     def __gt__(self, other: int | str | Timecode) -> bool:
         """Override greater than operator.
@@ -655,16 +656,15 @@ class Timecode:
             bool: True if the other is greater than this Timecode instance.
         """
         if isinstance(other, Timecode):
-            return self.framerate == other.framerate and self.frames > other.frames
+            if self.framerate != other.framerate:
+                raise ValueError("'>' not supported between instances of 'Timecode' with different framerates")
+            return self.frames > other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
             return self.frames > new_tc.frames
         if isinstance(other, int):
             return self.frames > other
-        raise TypeError(
-            "'>' not supported between instances of 'Timecode' and "
-            f"'{other.__class__.__name__}'"
-        )
+        return NotImplemented
 
     def __le__(self, other: int | str | Timecode | object) -> bool:
         """Override less or equal to operator.
@@ -679,16 +679,15 @@ class Timecode:
             bool: True if the other is less than or equal to this Timecode instance.
         """
         if isinstance(other, Timecode):
-            return self.framerate == other.framerate and self.frames <= other.frames
-        if isinstance(other, str):
+            if self.framerate != other.framerate:
+                raise ValueError("'<=' not supported between instances of 'Timecode' with different framerates")
+            return self.frames <= other.frames
+        elif isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
             return self.frames <= new_tc.frames
         if isinstance(other, int):
             return self.frames <= other
-        raise TypeError(
-            "'<' not supported between instances of 'Timecode' and "
-            f"'{other.__class__.__name__}'"
-        )
+        return NotImplemented
 
     def __lt__(self, other: int | str | Timecode) -> bool:
         """Override less than operator.
@@ -703,16 +702,15 @@ class Timecode:
             bool: True if the other is less than this Timecode instance.
         """
         if isinstance(other, Timecode):
+            if self.framerate != other.framerate:
+                raise ValueError("'<' not supported between instances of 'Timecode' with different framerates".format())
             return self.framerate == other.framerate and self.frames < other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
             return self.frames < new_tc.frames
         if isinstance(other, int):
             return self.frames < other
-        raise TypeError(
-            "'<=' not supported between instances of 'Timecode' and "
-            f"'{other.__class__.__name__}'"
-        )
+        return NotImplemented
 
     def __add__(self, other: int | Timecode) -> Timecode:
         """Return a new Timecode with the given timecode or frames added to this one.
@@ -736,9 +734,7 @@ class Timecode:
         elif isinstance(other, int):
             tc.add_frames(other)
         else:
-            raise TimecodeError(
-                f"Type {other.__class__.__name__} not supported for arithmetic."
-            )
+            return NotImplemented
 
         return tc
 
@@ -760,9 +756,7 @@ class Timecode:
         elif isinstance(other, int):
             subtracted_frames = self.frames - other
         else:
-            raise TimecodeError(
-                f"Type {other.__class__.__name__} not supported for arithmetic."
-            )
+            return NotImplemented
         tc = Timecode(self.framerate, frames=abs(subtracted_frames))
         tc.drop_frame = self.drop_frame
         return tc
@@ -785,9 +779,7 @@ class Timecode:
         elif isinstance(other, int):
             multiplied_frames = self.frames * other
         else:
-            raise TimecodeError(
-                f"Type {other.__class__.__name__} not supported for arithmetic."
-            )
+            return NotImplemented
         tc = Timecode(self.framerate, frames=multiplied_frames)
         tc.drop_frame = self.drop_frame
         return tc
@@ -810,9 +802,7 @@ class Timecode:
         elif isinstance(other, int):
             div_frames = int(float(self.frames) / float(other))
         else:
-            raise TimecodeError(
-                f"Type {other.__class__.__name__} not supported for arithmetic."
-            )
+            return NotImplemented
 
         return Timecode(self.framerate, frames=div_frames)
 
