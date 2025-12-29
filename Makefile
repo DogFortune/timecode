@@ -3,7 +3,7 @@ NUM_CPUS = $(shell nproc ||  grep -c '^processor' /proc/cpuinfo)
 PACKAGE_NAME = timecode
 SETUP_PY_FLAGS = --use-distutils
 VERSION := $(shell cat VERSION)
-VERSION_FILE=$(CURDIR)/VERSION
+VERSION_FILE=$(CURDIR)/src/$(PACKAGE_NAME)/VERSION
 VIRTUALENV_DIR:=.venv
 SYSTEM_PYTHON?=python3
 
