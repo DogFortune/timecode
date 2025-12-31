@@ -610,7 +610,8 @@ class Timecode:
         """
         if isinstance(other, Timecode):
             if self.framerate != other.framerate:
-                raise ValueError("'==' not supported between instances of 'Timecode' with different framerates")
+                raise ValueError("'==' not supported between instances of "
+                                 "'Timecode' with different framerates")
             return self.frames == other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
@@ -634,7 +635,8 @@ class Timecode:
         """
         if isinstance(other, Timecode):
             if self.framerate != other.framerate:
-                raise ValueError("'>=' not supported between instances of 'Timecode' with different framerates")
+                raise ValueError("'>=' not supported between instances of "
+                                 "'Timecode' with different framerates")
             return self.frames >= other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
@@ -657,7 +659,8 @@ class Timecode:
         """
         if isinstance(other, Timecode):
             if self.framerate != other.framerate:
-                raise ValueError("'>' not supported between instances of 'Timecode' with different framerates")
+                raise ValueError("'>' not supported between instances of "
+                                 "'Timecode' with different framerates")
             return self.frames > other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
@@ -680,9 +683,10 @@ class Timecode:
         """
         if isinstance(other, Timecode):
             if self.framerate != other.framerate:
-                raise ValueError("'<=' not supported between instances of 'Timecode' with different framerates")
+                raise ValueError("'<=' not supported between instances of "
+                                 "'Timecode' with different framerates")
             return self.frames <= other.frames
-        elif isinstance(other, str):
+        if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
             return self.frames <= new_tc.frames
         if isinstance(other, int):
@@ -703,7 +707,8 @@ class Timecode:
         """
         if isinstance(other, Timecode):
             if self.framerate != other.framerate:
-                raise ValueError("'<' not supported between instances of 'Timecode' with different framerates".format())
+                raise ValueError("'<' not supported between instances of "
+                                 "'Timecode' with different framerates")
             return self.framerate == other.framerate and self.frames < other.frames
         if isinstance(other, str):
             new_tc = Timecode(self.framerate, other)
